@@ -180,13 +180,13 @@ Ditahap ini, dilakukan beberapa proses cleaning dan transforming data
 
   2. Setelah kolom `combined_features` berhasil dibuat, langkah berikutnya adalah mentransformasikan teks tersebut ke dalam bentuk vektor numerik agar dapat digunakan dalam perhitungan kemiripan antar film. Teknik yang digunakan untuk representasi teks ini adalah **TF-IDF (Term Frequency-Inverse Document Frequency)**. <br>
 
-    TF-IDF menghitung bobot pentingnya kata dalam sebuah dokumen (dalam hal ini film), relatif terhadap semua film lainnya di dataset. Semakin unik sebuah kata dalam sebuah film, semakin tinggi bobotnya. Hal ini memungkinkan model mengenali kata kunci khas dari setiap film.
+      TF-IDF menghitung bobot pentingnya kata dalam sebuah dokumen (dalam hal ini film), relatif terhadap semua film lainnya di dataset. Semakin unik sebuah kata dalam sebuah film, semakin tinggi bobotnya. Hal ini memungkinkan model mengenali kata kunci khas dari setiap film.
 
-    Proses ini dilakukan menggunakan `TfidfVectorizer` dari library `sklearn`, dengan batas maksimum 3000 fitur dan penghapusan stopwords untuk menjaga efisiensi memori dan fokus pada kata-kata penting.<br>
-    ![Hasil](img/a.png) <br>
+      Proses ini dilakukan menggunakan `TfidfVectorizer` dari library `sklearn`, dengan batas maksimum 3000 fitur dan penghapusan stopwords untuk menjaga efisiensi memori dan fokus pada kata-kata penting.<br>
+      ![Hasil](img/a.png) <br>
 
-    **Insight:** <br>
-      Dataset content_based_df berhasil dibentuk sebagai struktur minimal dan efisien yang hanya berisi informasi yang dibutuhkan untuk model content-based filtering. Kolom combined_features yang telah dibuat menggabungkan genre, kata kunci, dan ringkasan cerita, sehingga bisa digunakan untuk mengukur kemiripan antar film secara tekstual. Struktur ini memudahkan saat proses vektorisasi dan perhitungan cosine similarity nantinya.
+      **Insight:** <br>
+        Dataset content_based_df berhasil dibentuk sebagai struktur minimal dan efisien yang hanya berisi informasi yang dibutuhkan untuk model content-based filtering. Kolom combined_features yang telah dibuat menggabungkan genre, kata kunci, dan ringkasan cerita, sehingga bisa digunakan untuk mengukur kemiripan antar film secara tekstual. Struktur ini memudahkan saat proses vektorisasi dan perhitungan cosine similarity nantinya.
 
   3. Sampling Data <br>
   Dilakukan pemilihan secara acak terhadap 5.000 data film dari content_based_df dengan random_state=42 agar hasil sampling dapat direproduksi. Hal ini dilakukan agar sistem tetap dapat berjalan optimal di perangkat dengan memori terbatas, tanpa memproses seluruh 42.000+ data film.
