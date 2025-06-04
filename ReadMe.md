@@ -244,21 +244,21 @@ Ditahap ini, dilakukan beberapa proses cleaning dan transforming data
 Berikut adalah tahapannya:
   1. Menghitung Kemiripan Antar Film (Cosine Similarity)<br>
 
-  Setelah fitur konten diubah menjadi representasi vektor, tahap utama dalam Content-Based Filtering adalah menghitung kemiripan antar film. Untuk itu, digunakan metode cosine similarity, yang mengukur kedekatan arah antara dua vektor teks.
+      Setelah fitur konten diubah menjadi representasi vektor, tahap utama dalam Content-Based Filtering adalah menghitung kemiripan antar film. Untuk itu, digunakan metode cosine similarity, yang mengukur kedekatan arah antara dua vektor teks.
 
   2. Membentuk Matriks Kemiripan Antar Film <br>
 
-  Matriks cosine similarity dikonversi menjadi DataFrame agar memudahkan pencarian dan pemetaan kemiripan antar judul film. Baris dan kolom berisi nama film, dan setiap sel berisi nilai kemiripan (dalam rentang 0–1).
+      Matriks cosine similarity dikonversi menjadi DataFrame agar memudahkan pencarian dan pemetaan kemiripan antar judul film. Baris dan kolom berisi nama film, dan setiap sel berisi nilai kemiripan (dalam rentang 0–1).
 
   3. Fungsi Rekomendasi Film <br>
-  Fungsi ini menerima input berupa judul film dan mengembalikan Top-10 film yang paling mirip berdasarkan skor cosine similarity. Fungsi ini menghindari merekomendasikan film yang sama dengan input dan dapat diintegrasikan dengan antarmuka pengguna secara langsung.
+      Fungsi ini menerima input berupa judul film dan mengembalikan Top-10 film yang paling mirip berdasarkan skor cosine similarity. Fungsi ini menghindari merekomendasikan film yang sama dengan input dan dapat diintegrasikan dengan antarmuka pengguna secara langsung.
 
-**Contoh Penggunaan Fungsi Rekomendasi**<br> contoh penggunaan fungsi movie_recommendations dengan judul "Toys in the Attic" untuk menampilkan 10 film lain yang paling mirip secara konten. Hasil rekomendasi biasanya memiliki tema fantasi, anak-anak, atau petualangan — sesuai dengan konten film acuan.
+      **Contoh Penggunaan Fungsi Rekomendasi**<br> contoh penggunaan fungsi movie_recommendations dengan judul "Toys in the Attic" untuk menampilkan 10 film lain yang paling mirip secara konten. Hasil rekomendasi biasanya memiliki tema fantasi, anak-anak, atau petualangan — sesuai dengan konten film acuan.
 
-**Hasil Rekomendasi Top-10:**<br>
+      **Hasil Rekomendasi Top-10:**<br>
 
-![Prediction](img/HasilContent.png) <br>
-  **Insight:** Model berhasil merekomendasikan film yang memiliki kesamaan tema fantasi, animasi, dan petualangan dengan film "Toys in the Attic". Beberapa judul seperti "The Lorax", "Brother Bear", dan "The Legend of Sarila" juga menampilkan nuansa imajinatif dan ramah anak, menunjukkan bahwa sistem content-based filtering dapat mengenali pola konten serupa dari genre dan narasi film. Ini menunjukkan bahwa sistem dapat mengenali pola konten dengan baik dan memberikan saran yang relevan berdasarkan kemiripan semantik.
+      ![Prediction](img/HasilContent.png) <br>
+        **Insight:** Model berhasil merekomendasikan film yang memiliki kesamaan tema fantasi, animasi, dan petualangan dengan film "Toys in the Attic". Beberapa judul seperti "The Lorax", "Brother Bear", dan "The Legend of Sarila" juga menampilkan nuansa imajinatif dan ramah anak, menunjukkan bahwa sistem content-based filtering dapat mengenali pola konten serupa dari genre dan narasi film. Ini menunjukkan bahwa sistem dapat mengenali pola konten dengan baik dan memberikan saran yang relevan berdasarkan kemiripan semantik.
 
 ## 2. Collaborative Filtering
 
@@ -286,36 +286,37 @@ Berikut adalah tahapannya:
 
   2. Kompilasi dan Training Model
 
-  Model dikompilasi menggunakan fungsi loss Mean Squared Error (MSE) yang umum dipakai untuk regresi seperti prediksi rating. Optimizer RMSprop digunakan dengan learning rate 0.001. Selain itu, metrik evaluasi yang dipantau adalah Root Mean Squared Error (RMSE). Model kemudian dilatih selama 10 epoch dengan data training (x_train, y_train) dan divalidasi menggunakan data validasi (x_val, y_val). Pelatihan ini memungkinkan model belajar hubungan antara pengguna dan film berdasarkan pola interaksi yang ada.
+      Model dikompilasi menggunakan fungsi loss Mean Squared Error (MSE) yang umum dipakai untuk regresi seperti prediksi rating. Optimizer RMSprop digunakan dengan learning rate 0.001. Selain itu, metrik evaluasi yang dipantau adalah Root Mean Squared Error (RMSE). Model kemudian dilatih selama 10 epoch dengan data training (x_train, y_train) dan divalidasi menggunakan data validasi (x_val, y_val). Pelatihan ini memungkinkan model belajar hubungan antara pengguna dan film berdasarkan pola interaksi yang ada.
 
-    **Hasil Training:**<br>
+        **Hasil Training:**<br>
 
-    ![Training](img/HasilTColab.png) <br>
-    
-    **Insight:**
+        ![Training](img/HasilTColab.png) <br>
+        
+        **Insight:**
 
-    * Model berhasil menurunkan error prediksi (RMSE) dari epoch 1 hingga 10.
+        * Model berhasil menurunkan error prediksi (RMSE) dari epoch 1 hingga 10.
 
-    * RMSE akhir data validasi sebesar 0.2678 menandakan prediksi model cukup akurat untuk skala 0–1.
+        * RMSE akhir data validasi sebesar 0.2678 menandakan prediksi model cukup akurat untuk skala 0–1.
 
-    * Model menunjukkan stabilitas yang baik tanpa lonjakan error → menandakan bahwa model tidak overfitting.
+        * Model menunjukkan stabilitas yang baik tanpa lonjakan error → menandakan bahwa model tidak overfitting.
 
-    * Model siap digunakan untuk memberikan rekomendasi film kepada pengguna berdasarkan pola rating mereka.
+        * Model siap digunakan untuk memberikan rekomendasi film kepada pengguna berdasarkan pola rating mereka.
 
   3. Setelah model collaborative filtering selesai dilatih, langkah selanjutnya adalah menghasilkan rekomendasi film berdasarkan pola kesukaan pengguna. Proses dimulai dengan memilih satu userId secara acak dari dataset rating. Kemudian, diambil daftar film yang sudah pernah dirating oleh pengguna tersebut. Dari situ, disusun daftar film yang belum dirating—yaitu film yang belum ditonton oleh pengguna dan tersedia dalam data (termasuk dalam pemetaan movie_to_movie_encoded). Film-film inilah yang akan digunakan untuk prediksi dan rekomendasi.
 
-  4. Pilih Satu User dan Siapkan Data Film yang Belum Dirating, Encode User dan Movie, Buat Array Prediksi dan Buat Fungsi Rekomendasi Film. Film yang belum ditonton oleh user diencode menggunakan movie_to_movie_encoded, lalu digabung dengan ID user yang telah diencode untuk membentuk pasangan [user, movie]. Hasilnya adalah array input yang siap digunakan oleh model untuk memprediksi rating terhadap setiap film. <br> Fungsi ini memprediksi rating terhadap film yang belum ditonton user, lalu mengambil top-k film dengan skor tertinggi sebagai rekomendasi. ID film hasil prediksi dikonversi kembali ke ID asli, kemudian dicocokkan dengan metadata dari dataset movies untuk menampilkan judulnya. Rekomendasi ditampilkan dalam format daftar terurut, dan juga dikembalikan sebagai DataFrame.
+  4. Pilih Satu User dan Siapkan Data Film yang Belum Dirating, Encode User dan Movie, Buat Array Prediksi dan Buat Fungsi Rekomendasi Film. Film yang belum ditonton oleh user diencode menggunakan movie_to_movie_encoded, lalu digabung dengan ID user yang telah diencode untuk membentuk pasangan [user, movie]. Hasilnya adalah array input yang siap digunakan oleh model untuk memprediksi rating terhadap setiap film. <br> 
+  Fungsi ini memprediksi rating terhadap film yang belum ditonton user, lalu mengambil top-k film dengan skor tertinggi sebagai rekomendasi. ID film hasil prediksi dikonversi kembali ke ID asli, kemudian dicocokkan dengan metadata dari dataset movies untuk menampilkan judulnya. Rekomendasi ditampilkan dalam format daftar terurut, dan juga dikembalikan sebagai DataFrame.
 
-  **Hasil Rekomendasi:**<br>
+      **Hasil Rekomendasi:**<br>
 
-  ![PredictionC](img/HasilColab.png) <br>
-    **Insight:**
+      ![PredictionC](img/HasilColab.png) <br>
+          **Insight:**
 
-    Rekomendasi yang dihasilkan untuk user ID 95 menunjukkan variasi film dari berbagai genre, mulai dari drama, crime, hingga action. Hal ini menunjukkan bahwa model collaborative filtering mampu menangkap preferensi tersembunyi pengguna berdasarkan pola interaksi pengguna lain yang memiliki kesamaan selera.
+          Rekomendasi yang dihasilkan untuk user ID 95 menunjukkan variasi film dari berbagai genre, mulai dari drama, crime, hingga action. Hal ini menunjukkan bahwa model collaborative filtering mampu menangkap preferensi tersembunyi pengguna berdasarkan pola interaksi pengguna lain yang memiliki kesamaan selera.
 
-    Beberapa film seperti “Once Were Warriors” dan “Three Colors: Red” menunjukkan bahwa pengguna ini cenderung menyukai film dengan tema emosional dan mendalam, sementara film seperti “Men in Black II” dan “48 Hrs.” mengindikasikan adanya preferensi terhadap film aksi dan komedi.
+          Beberapa film seperti “Once Were Warriors” dan “Three Colors: Red” menunjukkan bahwa pengguna ini cenderung menyukai film dengan tema emosional dan mendalam, sementara film seperti “Men in Black II” dan “48 Hrs.” mengindikasikan adanya preferensi terhadap film aksi dan komedi.
 
-    Secara keseluruhan, model berhasil memberikan rekomendasi yang beragam namun masih relevan, yang merupakan kekuatan utama dari pendekatan collaborative filtering.
+          Secara keseluruhan, model berhasil memberikan rekomendasi yang beragam namun masih relevan, yang merupakan kekuatan utama dari pendekatan collaborative filtering.
 
 ## Evaluation
 
